@@ -1,0 +1,108 @@
+.register-wrapper {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .register-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .register-card {
+    width: 400px;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .register-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .register-title {
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .register-description {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-toggle-icon {
+    position: absolute;
+    right: 0.75rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+    color: #777;
+  }
+  
+  .password-toggle-icon:hover {
+    color: #333;
+  }
+  
+  .register-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .register-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .register-footer {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .register-footer-text {
+    font-size: 14px;
+  }
+  
+  .register-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .register-link:hover {
+    text-decoration: underline;
+  }
+  
+  .register-background {
+    flex: 1;
+    background-color: #f0f4f8; 
+  }
+  
