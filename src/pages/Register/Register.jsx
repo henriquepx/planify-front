@@ -6,6 +6,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 
 const registerSchema = z.object({
   name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
@@ -18,6 +19,7 @@ const registerSchema = z.object({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
@@ -27,13 +29,15 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('*', data, {
+      const response = await axios.post(`${API_URL}/register`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
       console.log(response.data);
-      console.log('Cadastrando');
+      console.log('Cadastro efetuado');
+  
+      navigate('/home');
     } catch (error) {
       console.error(error);
     }
@@ -94,11 +98,11 @@ const Register = () => {
                 {errors.confirmPassword && <p className="error-message">{errors.confirmPassword.message}</p>}
               </div>
             </div>
-            <button type="submit" className="register-button">Cadastrar</button>
+            <button type="submit" className="form-input" style={{ cursor: 'pointer', backgroundColor: '#007bff', color: 'white' }}>Cadastrar</button>
           </form>
           <div className="register-footer">
             <p className="register-footer-text">
-              Já possui uma conta? <a href="/login" className="register-link">Login</a>
+              Já possui uma conta? <a href="/" className="register-link">Login</a>
             </p>
           </div>
         </div>

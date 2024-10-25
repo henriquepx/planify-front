@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -15,6 +16,7 @@ const loginSchema = z.object({
   path: ["confirmPassword"],
 });
 const Login = () => {
+  const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -23,18 +25,18 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('*', data, {
+      const response = await axios.post(`${API_URL}/login`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
       console.log(response.data);
       console.log('Login efetuado');
+      navigate('/home');
     } catch (error) {
       console.error(error);
     }
   };
-
 
   return (
     <div className="login-wrapper">
@@ -47,9 +49,7 @@ const Login = () => {
           <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
                 <label htmlFor="email" className="form-label">Email</label>
-                <div  className="password-input-container">
-                    <input type="email" id="email" className="form-input" placeholder="seuemail@example.com" {...register('password')} />
-              </div>
+                  <input type="email" id="email" className="form-input" placeholder="seuemail@example.com" {...register('email')} />
               {errors.email && <p className="error-message">{errors.email.message}</p>}
             </div>
             <div className="form-group">
@@ -70,7 +70,7 @@ const Login = () => {
               </div>
               {errors.password && <p className="error-message">{errors.password.message}</p>}
             </div>
-            <button type="submit" className="login-button">Entrar</button>
+            <button type="submit" className="form-input" style={{ cursor: 'pointer', backgroundColor: '#007bff', color: 'white' }}>Entrar</button>
           </form>
           <div className="login-footer">
             <p className="login-footer-text">
