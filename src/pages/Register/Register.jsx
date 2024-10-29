@@ -28,15 +28,17 @@ const Register = () => {
   });
 
   const onSubmit = async (data) => {
+    const { email, password } = data;
+    console.log('email:', email, 'password:', password);
     try {
-      const response = await axios.post(`${API_URL}/register`, data, {
+      const response = await axios.post('https://planify-back.onrender.com/api/auth/signup', { email, user_password: password }, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
       console.log(response.data);
       console.log('Cadastro efetuado');
-  
+    
       navigate('/home');
     } catch (error) {
       console.error(error);

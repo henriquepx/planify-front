@@ -25,7 +25,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(`${API_URL}/login`, data, {
+      const response = await axios.post(`https://planify-back.onrender.com/api/auth/signin`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
