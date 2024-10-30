@@ -11,9 +11,6 @@ import { useNavigate } from 'react-router-dom';
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
   password: z.string().min(3, "A senha deve ter pelo menos 3 caracteres"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "As senhas não correspondem",
-  path: ["confirmPassword"],
 });
 const Login = () => {
   const navigate = useNavigate();
@@ -24,6 +21,7 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
+    console.log("Botão de login clicado");
     try {
       const response = await axios.post(`https://planify-back.onrender.com/api/auth/signin`, data, {
         headers: {
@@ -71,7 +69,7 @@ const Login = () => {
               </div>
               {errors.password && <p className="error-message">{errors.password.message}</p>}
             </div>
-            <button type="submit" className="form-input" style={{ cursor: 'pointer', backgroundColor: '#007bff', color: 'white' }}>Entrar</button>
+            <button type="submit">Entrar</button>
           </form>
           <div className="login-footer">
             <p className="login-footer-text">
