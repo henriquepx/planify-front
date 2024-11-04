@@ -21,9 +21,11 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
+    const { email, password } = data;
+    console.log('email:', email, 'password:', password);
     console.log("Botão de login clicado");
     try {
-      const response = await axios.post(`https://planify-back.onrender.com/api/auth/signin`, data, {
+      const response = await axios.post(`https://planify-back.onrender.com/api/auth/signin`, { email, user_password: password }, {
         headers: {
           'Content-Type': 'application/json',
           withCredentials: true,
