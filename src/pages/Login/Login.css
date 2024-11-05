@@ -1,7 +1,7 @@
 body, html {
     height: 100%;
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
   }
   
   .login-wrapper {
@@ -15,6 +15,7 @@ body, html {
     align-items: center;
     justify-content: center;
   }
+  
   
   .login-card {
     width: 80%;
@@ -147,4 +148,43 @@ body, html {
   
   .password-toggle-icon:hover {
     color: #333;
+  }
+  
+  .submit-button {
+    width: 95%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: white;
+    background-color: #4A90E2;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .submit-button:hover {
+    background-color: #357ABD;
+  }
+  
+  .submit-button:disabled {
+    background-color: #B0C4DE;
+    cursor: not-allowed;
+  }
+  
+  .loading-spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.6s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }

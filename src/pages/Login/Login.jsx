@@ -12,18 +12,19 @@ const loginSchema = z.object({
   email: z.string().email("Email inválido"),
   password: z.string().min(3, "A senha deve ter pelo menos 3 caracteres"),
 });
+
 const Login = () => {
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(loginSchema)
   });
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     const { email, password } = data;
-    console.log('email:', email, 'password:', password);
-    console.log("Botão de login clicado");
     try {
       const response = await axios.post(`https://planify-back.onrender.com/api/auth/signin`, { email, user_password: password }, {
         headers: {
@@ -36,6 +37,8 @@ const Login = () => {
       navigate('/home');
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -49,8 +52,8 @@ const Login = () => {
           </div>
           <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
-                <label htmlFor="email" className="form-label">Email</label>
-                  <input type="email" id="email" className="form-input" placeholder="seuemail@example.com" {...register('email')} />
+              <label htmlFor="email" className="form-label">Email</label>
+              <input type="email" id="email" className="form-input" placeholder="seuemail@example.com" {...register('email')} />
               {errors.email && <p className="error-message">{errors.email.message}</p>}
             </div>
             <div className="form-group">
@@ -71,7 +74,9 @@ const Login = () => {
               </div>
               {errors.password && <p className="error-message">{errors.password.message}</p>}
             </div>
-            <button type="submit">Entrar</button>
+            <button type="submit" className="submit-button" disabled={isLoading}>
+              {isLoading ? <span className="loading-spinner"></span> : 'Entrar'}
+            </button>
           </form>
           <div className="login-footer">
             <p className="login-footer-text">

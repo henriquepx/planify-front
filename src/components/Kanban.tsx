@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Kanban.css';
 
-// Tipos de dados
 type Task = {
   id: number;
   content: string;
@@ -13,7 +12,6 @@ type ColumnType = {
   tasks: Task[];
 };
 
-// Estado inicial das colunas
 const initialColumns: ColumnType[] = [
   { id: 'todo', title: 'To Do', tasks: [] },
   { id: 'in-progress', title: 'In Progress', tasks: [] },
@@ -21,14 +19,20 @@ const initialColumns: ColumnType[] = [
 ];
 
 const Kanban: React.FC = () => {
-  const [columns, setColumns] = useState<ColumnType[]>(initialColumns);
+  const [columns, setColumns] = useState<ColumnType[]>(() => {
+    const savedColumns = localStorage.getItem('kanbanColumns');
+    return savedColumns ? JSON.parse(savedColumns) : initialColumns;
+  });
   const [newTasks, setNewTasks] = useState<{ [key: string]: string }>({
     'todo': '',
     'in-progress': '',
     'done': '',
   });
 
-  // Função para adicionar uma nova tarefa
+  useEffect(() => {
+    localStorage.setItem('kanbanColumns', JSON.stringify(columns));
+  }, [columns]);
+
   const addTask = (columnId: string) => {
     if (newTasks[columnId].trim() === '') return;
     const updatedColumns = columns.map((column) => {
@@ -47,7 +51,6 @@ const Kanban: React.FC = () => {
     setNewTasks({ ...newTasks, [columnId]: '' });
   };
 
-  // Função para editar uma tarefa
   const editTask = (columnId: string, taskId: number, newContent: string) => {
     const updatedColumns = columns.map((column) => {
       if (column.id === columnId) {
@@ -63,7 +66,6 @@ const Kanban: React.FC = () => {
     setColumns(updatedColumns);
   };
 
-  // Função para excluir uma tarefa
   const deleteTask = (columnId: string, taskId: number) => {
     const updatedColumns = columns.map((column) => {
       if (column.id === columnId) {
@@ -77,7 +79,6 @@ const Kanban: React.FC = () => {
     setColumns(updatedColumns);
   };
 
-  // Função para mover uma tarefa entre colunas
   const moveTask = (taskId: number, sourceId: string, destinationId: string) => {
     if (sourceId === destinationId) return;
 
@@ -106,31 +107,30 @@ const Kanban: React.FC = () => {
         })
       );
     }
-  };
+  }
 
   return (
     <div className="kanbanContainer">
-      {columns.map((column) => (
-        <div key={column.id} className="column">
+      <h1>Planify</h1>
+      <div className='kanbanmain'>
+        {columns.map((column) => (
+          <div key={column.id} className="column">
           <h2 className="columnTitle">{column.title}</h2>
           <div className="taskList">
             {column.tasks.map((task) => (
               <div key={task.id} className="task">
-                <p>{task.content}</p>
-                <button onClick={() => deleteTask(column.id, task.id)}>Excluir</button>
-                <button onClick={() => editTask(column.id, task.id, prompt('Novo conteúdo:', task.content) || task.content)}>Editar</button>
-                <select
-                  onChange={(e) => moveTask(task.id, column.id, e.target.value)}
-                  defaultValue=""
-                >
+              <p className="task-content">{task.content}</p>
+              <div className="task-actions">
+                <i className="fas fa-edit" onClick={() => editTask(column.id, task.id, prompt('Novo conteúdo:', task.content) || task.content)}></i>
+                <i className="fas fa-trash-alt" onClick={() => deleteTask(column.id, task.id)}></i>
+                <select onChange={(e) => moveTask(task.id, column.id, e.target.value)} defaultValue="">
                   <option value="" disabled>Mover para...</option>
-                  {columns
-                    .filter((col) => col.id !== column.id)
-                    .map((col) => (
-                      <option key={col.id} value={col.id}>{col.title}</option>
-                    ))}
+                  {columns.filter((col) => col.id !== column.id).map((col) => (
+                    <option key={col.id} value={col.id}>{col.title}</option>
+                  ))}
                 </select>
               </div>
+            </div>
             ))}
           </div>
           <div className="addTask">
@@ -142,8 +142,9 @@ const Kanban: React.FC = () => {
             />
             <button onClick={() => addTask(column.id)}>Adicionar</button>
           </div>
-        </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
